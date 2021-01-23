@@ -1,0 +1,52 @@
+Source: sqlparse
+Maintainer: Andrii Senkovych <andrii@senkovych.com>
+Uploaders: Debian Python Team <team+python@tracker.debian.org>
+Section: python
+Priority: optional
+Build-Depends: debhelper-compat (= 13),
+               dh-python,
+               2to3,
+               python3-all,
+               python3-sphinx,
+               python3-pytest,
+               python3-setuptools
+Standards-Version: 4.5.1
+Vcs-Browser: https://salsa.debian.org/python-team/packages/sqlparse
+Vcs-Git: https://salsa.debian.org/python-team/packages/sqlparse.git
+Homepage: https://github.com/andialbrecht/sqlparse
+Rules-Requires-Root: no
+
+Package: python3-sqlparse
+Architecture: all
+Depends: ${misc:Depends},
+         ${python3:Depends}
+Suggests: python-sqlparse-doc
+Description: non-validating SQL parser for Python 3
+ Sqlparse is a library which provides support for parsing, splitting and
+ customizable formatting of SQL statements in Python environment.
+ .
+ This is the Python 3 version of the package.
+
+Package: python-sqlparse-doc
+Architecture: all
+Multi-Arch: foreign
+Section: doc
+Depends: ${sphinxdoc:Depends},
+         ${misc:Depends}
+Built-Using: ${sphinxdoc:Built-Using}
+Description: documentation for non-validating SQL parser in Python
+ Sqlparse is a library which provides support for parsing, splitting and
+ customizable formatting of SQL statements in Python environment.
+ .
+ This package contains HTML documentation for provided module.
+
+Package: sqlformat
+Architecture: all
+Section: text
+Depends: ${misc:Depends},
+         ${python3:Depends},
+         python3-sqlparse (= ${binary:Version})
+Description: SQL formatting utility
+ The sqlformat command-line tool can be used to reformat SQL file according to
+ specified options or prepare a snippet in some programming language (only
+ Python and PHP currently supported).

@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+
+cp -R tests "$AUTOPKGTEST_TMP"
+2to3 -w "$AUTOPKGTEST_TMP/tests"
+cd "$AUTOPKGTEST_TMP"
+
+py.test-3 tests
