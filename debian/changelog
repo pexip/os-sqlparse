@@ -1,3 +1,9 @@
+sqlparse (0.4.1-1pexip1) pexip; urgency=medium
+
+  * Prepare Pexip packaging
+
+ -- Huw Jones <huw@pexip.com>  Tue, 15 Jun 2021 11:41:43 +0000
+
 sqlparse (0.4.1-1) unstable; urgency=low
 
   * Team upload.

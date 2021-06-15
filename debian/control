@@ -1,9 +1,10 @@
 Source: sqlparse
-Maintainer: Andrii Senkovych <andrii@senkovych.com>
-Uploaders: Debian Python Team <team+python@tracker.debian.org>
+Maintainer: Pexip AS <packaging@pexip.com>
+XSBC-Pexip-Original-Maintainer: Andrii Senkovych <andrii@senkovych.com>
+XSBC-Pexip-Original-Uploaders: Debian Python Team <team+python@tracker.debian.org>
 Section: python
 Priority: optional
-Build-Depends: debhelper-compat (= 13),
+Build-Depends: debhelper-compat (= 12),
                dh-python,
                2to3,
                python3-all,
@@ -15,6 +16,7 @@ Vcs-Browser: https://salsa.debian.org/python-team/packages/sqlparse
 Vcs-Git: https://salsa.debian.org/python-team/packages/sqlparse.git
 Homepage: https://github.com/andialbrecht/sqlparse
 Rules-Requires-Root: no
+XS-Pexip-Upstream: http://ftp.debian.org/debian/ bullseye
 
 Package: python3-sqlparse
 Architecture: all
