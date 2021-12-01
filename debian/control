@@ -10,7 +10,7 @@ Build-Depends: debhelper-compat (= 13),
                python3-sphinx,
                python3-pytest,
                python3-setuptools
-Standards-Version: 4.5.1
+Standards-Version: 4.6.0
 Vcs-Browser: https://salsa.debian.org/python-team/packages/sqlparse
 Vcs-Git: https://salsa.debian.org/python-team/packages/sqlparse.git
 Homepage: https://github.com/andialbrecht/sqlparse

@@ -1,7 +1,31 @@
+Release 0.4.2 (Sep 10, 2021)
+----------------------------
+
+Notable Changes
+
+* IMPORTANT: This release fixes a security vulnerability in the
+  strip comments filter. In this filter a regular expression that was
+  vulnerable to ReDOS (Regular Expression Denial of Service) was
+  used. See the security advisory for details: https://github.com/andialbrecht/sqlparse/security/advisories/GHSA-p5w8-wqhj-9hhf
+  The vulnerability was discovered by @erik-krogh and @yoff from
+  GitHub Security Lab (GHSL). Thanks for reporting!
+
+Enhancements
+
+* Add ELSIF as keyword (issue584).
+* Add CONFLICT and ON_ERROR_STOP keywords (pr595, by j-martin).
+
+Bug Fixes
+
+* Fix parsing of backticks (issue588).
+* Fix parsing of scientific number (issue399).
+
+
 Release 0.4.1 (Oct 08, 2020)
 ----------------------------
 
 Bug Fixes
+
 * Just removed a debug print statement, sorry...
 
 
