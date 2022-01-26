@@ -1,3 +1,9 @@
+sqlparse (0.4.1-1pexip2) pexip; urgency=medium
+
+  * Bump version
+
+ -- Huw Jones <huw@pexip.com>  Wed, 26 Jan 2022 12:08:33 +0000
+
 sqlparse (0.4.1-1pexip1) pexip; urgency=medium
 
   * Prepare Pexip packaging
