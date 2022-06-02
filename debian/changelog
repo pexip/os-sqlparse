@@ -1,3 +1,9 @@
+sqlparse (0.4.1-1pexip3) pexip; urgency=medium
+
+  * Initial bullseye build
+
+ -- Mark Hymers <mark.hymers@pexip.com>  Thu, 02 Jun 2022 14:42:57 +0100
+
 sqlparse (0.4.1-1pexip2) pexip; urgency=medium
 
   * Bump version
