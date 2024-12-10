@@ -1,20 +1,22 @@
 Source: sqlparse
-Maintainer: Andrii Senkovych <andrii@senkovych.com>
-Uploaders: Debian Python Team <team+python@tracker.debian.org>
+Maintainer: Debian Python Team <team+python@tracker.debian.org>
+Uploaders: Andrii Senkovych <andrii@senkovych.com>,
 Section: python
 Priority: optional
 Build-Depends: debhelper-compat (= 13),
-               dh-python,
-               2to3,
+               dh-sequence-python3,
                python3-all,
+               pybuild-plugin-pyproject,
+               python3-hatchling,
                python3-sphinx,
                python3-pytest,
                python3-setuptools
-Standards-Version: 4.6.0
+Standards-Version: 4.6.2
 Vcs-Browser: https://salsa.debian.org/python-team/packages/sqlparse
 Vcs-Git: https://salsa.debian.org/python-team/packages/sqlparse.git
 Homepage: https://github.com/andialbrecht/sqlparse
 Rules-Requires-Root: no
+Testsuite: autopkgtest-pkg-pybuild
 
 Package: python3-sqlparse
 Architecture: all
@@ -24,8 +26,6 @@ Suggests: python-sqlparse-doc
 Description: non-validating SQL parser for Python 3
  Sqlparse is a library which provides support for parsing, splitting and
  customizable formatting of SQL statements in Python environment.
- .
- This is the Python 3 version of the package.
 
 Package: python-sqlparse-doc
 Architecture: all

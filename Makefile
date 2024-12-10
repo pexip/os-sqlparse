@@ -22,5 +22,6 @@ clean:
 
 release:
 	@rm -rf dist/
-	python setup.py sdist bdist_wheel
-	twine upload --sign --identity E0B84F81 dist/*
+	python -m build
+	hatch publish
+	@echo "Reminder: Add release on github https://github.com/andialbrecht/sqlparse/releases"
