@@ -1,3 +1,14 @@
+sqlparse (0.4.2-1+deb12u1) bookworm; urgency=medium
+
+  * Non-maintainer upload.
+  * Fix CVE-2023-30608: Parser contains a regular expression that is
+    vulnerable to ReDOS. (Closes: #1034615)
+  * Fix CVE-2024-4340: Parsing of heavily nested list leads to Denial of
+    Service. (Closes: #1070148)
+  * Adjust d/salsa-ci.yml for bookworm.
+
+ -- Guilhem Moulin <guilhem@debian.org>  Sat, 21 Dec 2024 18:18:53 +0100
+
 sqlparse (0.4.2-1) unstable; urgency=medium
 
   * Team upload.
