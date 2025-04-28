@@ -4,13 +4,14 @@ python-sqlparse - Parse SQL statements
 |buildstatus|_
 |coverage|_
 |docs|_
+|packageversion|_
 
 .. docincludebegin
 
 sqlparse is a non-validating SQL parser for Python.
 It provides support for parsing, splitting and formatting SQL statements.
 
-The module is compatible with Python 3.5+ and released under the terms of the
+The module is compatible with Python 3.8+ and released under the terms of the
 `New BSD license <https://opensource.org/licenses/BSD-3-Clause>`_.
 
 Visit the project page at https://github.com/andialbrecht/sqlparse for
@@ -59,7 +60,7 @@ Documentation
    https://sqlparse.readthedocs.io/
 
 Online Demo
-  https://sqlformat.org/
+   https://sqlformat.org/
 
 
 sqlparse is licensed under the BSD license.
@@ -67,9 +68,11 @@ sqlparse is licensed under the BSD license.
 Parts of the code are based on pygments written by Georg Brandl and others.
 pygments-Homepage: http://pygments.org/
 
-.. |buildstatus| image:: https://secure.travis-ci.org/andialbrecht/sqlparse.png?branch=master
-.. _buildstatus: https://travis-ci.org/#!/andialbrecht/sqlparse
+.. |buildstatus| image:: https://github.com/andialbrecht/sqlparse/actions/workflows/python-app.yml/badge.svg
+.. _buildstatus: https://github.com/andialbrecht/sqlparse/actions/workflows/python-app.yml
 .. |coverage| image:: https://codecov.io/gh/andialbrecht/sqlparse/branch/master/graph/badge.svg
 .. _coverage: https://codecov.io/gh/andialbrecht/sqlparse
 .. |docs| image:: https://readthedocs.org/projects/sqlparse/badge/?version=latest
 .. _docs: https://sqlparse.readthedocs.io/en/latest/?badge=latest
+.. |packageversion| image:: https://img.shields.io/pypi/v/sqlparse?color=%2334D058&label=pypi%20package
+.. _packageversion: https://pypi.org/project/sqlparse

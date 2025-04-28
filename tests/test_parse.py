@@ -4,7 +4,8 @@ from io import StringIO
 import pytest
 
 import sqlparse
-from sqlparse import sql, tokens as T
+from sqlparse import sql, tokens as T, keywords
+from sqlparse.lexer import Lexer
 
 
 def test_parse_tokenize():
@@ -132,6 +133,17 @@ def test_parse_nested_function():
     assert type(t[0]) is sql.Function
 
 
+def test_parse_casted_params():
+    t = sqlparse.parse("foo(DATE '2023-11-14', TIMESTAMP '2023-11-15')")[0].tokens[0].get_parameters()
+    assert len(t) == 2
+
+
+def test_parse_div_operator():
+    p = sqlparse.parse('col1 DIV 5 AS div_col1')[0].tokens
+    assert p[0].tokens[0].tokens[2].ttype is T.Operator
+    assert p[0].get_alias() == 'div_col1'
+
+
 def test_quoted_identifier():
     t = sqlparse.parse('select x.y as "z" from foo')[0].tokens
     assert isinstance(t[2], sql.Identifier)
@@ -142,6 +154,7 @@ def test_quoted_identifier():
 @pytest.mark.parametrize('name', [
     'foo', '_foo',  # issue175
     '1_data',  # valid MySQL table name, see issue337
+    '業者名稱',  # valid at least for SQLite3, see issue641
 ])
 def test_valid_identifier_names(name):
     t = sqlparse.parse(name)[0].tokens
@@ -170,6 +183,14 @@ def test_psql_quotation_marks():
     CREATE OR REPLACE FUNCTION testfunc2(integer) RETURNS integer AS $PROC_2$
           ....
     $PROC_2$ LANGUAGE plpgsql;""")
+    assert len(t) == 2
+
+    # operators are valid infront of dollar quoted strings
+    t = sqlparse.split("""UPDATE SET foo =$$bar;SELECT bar$$""")
+    assert len(t) == 1
+    
+    # identifiers must be separated by whitespace
+    t = sqlparse.split("""UPDATE SET foo TO$$bar;SELECT bar$$""")
     assert len(t) == 2
 
 
@@ -482,3 +503,93 @@ def test_parenthesis():
                                                     T.Newline,
                                                     T.Newline,
                                                     T.Punctuation]
+
+
+def test_configurable_keywords():
+    sql = """select * from foo BACON SPAM EGGS;"""
+    tokens = sqlparse.parse(sql)[0]
+
+    assert list(
+        (t.ttype, t.value)
+        for t in tokens
+        if t.ttype not in sqlparse.tokens.Whitespace
+    ) == [
+        (sqlparse.tokens.Keyword.DML, "select"),
+        (sqlparse.tokens.Wildcard, "*"),
+        (sqlparse.tokens.Keyword, "from"),
+        (None, "foo BACON"),
+        (None, "SPAM EGGS"),
+        (sqlparse.tokens.Punctuation, ";"),
+    ]
+
+    Lexer.get_default_instance().add_keywords(
+        {
+            "BACON": sqlparse.tokens.Name.Builtin,
+            "SPAM": sqlparse.tokens.Keyword,
+            "EGGS": sqlparse.tokens.Keyword,
+        }
+    )
+
+    tokens = sqlparse.parse(sql)[0]
+
+    # reset the syntax for later tests.
+    Lexer.get_default_instance().default_initialization()
+
+    assert list(
+        (t.ttype, t.value)
+        for t in tokens
+        if t.ttype not in sqlparse.tokens.Whitespace
+    ) == [
+        (sqlparse.tokens.Keyword.DML, "select"),
+        (sqlparse.tokens.Wildcard, "*"),
+        (sqlparse.tokens.Keyword, "from"),
+        (None, "foo"),
+        (sqlparse.tokens.Name.Builtin, "BACON"),
+        (sqlparse.tokens.Keyword, "SPAM"),
+        (sqlparse.tokens.Keyword, "EGGS"),
+        (sqlparse.tokens.Punctuation, ";"),
+    ]
+
+
+def test_configurable_regex():
+    lex = Lexer.get_default_instance()
+    lex.clear()
+
+    my_regex = (r"ZORDER\s+BY\b", sqlparse.tokens.Keyword)
+
+    lex.set_SQL_REGEX(
+        keywords.SQL_REGEX[:38]
+        + [my_regex]
+        + keywords.SQL_REGEX[38:]
+    )
+    lex.add_keywords(keywords.KEYWORDS_COMMON)
+    lex.add_keywords(keywords.KEYWORDS_ORACLE)
+    lex.add_keywords(keywords.KEYWORDS_PLPGSQL)
+    lex.add_keywords(keywords.KEYWORDS_HQL)
+    lex.add_keywords(keywords.KEYWORDS_MSACCESS)
+    lex.add_keywords(keywords.KEYWORDS)
+
+    tokens = sqlparse.parse("select * from foo zorder by bar;")[0]
+
+    # reset the syntax for later tests.
+    Lexer.get_default_instance().default_initialization()
+
+    assert list(
+        (t.ttype, t.value)
+        for t in tokens
+        if t.ttype not in sqlparse.tokens.Whitespace
+    )[4] == (sqlparse.tokens.Keyword, "zorder by")
+
+
+@pytest.mark.parametrize('sql', [
+    '->', '->>', '#>', '#>>',
+    '@>', '<@',
+    # leaving ? out for now, they're somehow ambiguous as placeholders
+    # '?', '?|', '?&',
+    '||', '-', '#-'
+])
+def test_json_operators(sql):
+    p = sqlparse.parse(sql)
+    assert len(p) == 1
+    assert len(p[0].tokens) == 1
+    assert p[0].tokens[0].ttype == sqlparse.tokens.Operator

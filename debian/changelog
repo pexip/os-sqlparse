@@ -1,3 +1,49 @@
+sqlparse (0.5.3-1) unstable; urgency=medium
+
+  * Team upload.
+  * New upstream release.
+
+ -- Colin Watson <cjwatson@debian.org>  Tue, 10 Dec 2024 21:54:20 +0000
+
+sqlparse (0.5.2-1) unstable; urgency=medium
+
+  * Team upload.
+  * New upstream release.
+
+ -- Colin Watson <cjwatson@debian.org>  Sun, 17 Nov 2024 11:19:39 +0100
+
+sqlparse (0.5.1-2) unstable; urgency=medium
+
+  * Team upload.
+  * Use new dh-sequence-python3
+  * Set DPT as Maintainer per new Team Policy
+
+ -- Alexandre Detiste <tchet@debian.org>  Thu, 22 Aug 2024 17:38:16 +0200
+
+sqlparse (0.5.1-1) unstable; urgency=medium
+
+  * Team upload.
+  * New upstream release.
+
+ -- Colin Watson <cjwatson@debian.org>  Fri, 19 Jul 2024 12:07:46 +0100
+
+sqlparse (0.5.0-1) unstable; urgency=medium
+
+  * Team upload.
+  * New upstream release:
+    - CVE-2024-4340: Fixes a potential denial of service attack due to
+      recursion error for deeply nested statements (closes: #1070148).
+
+ -- Colin Watson <cjwatson@debian.org>  Sun, 12 May 2024 18:47:20 +0100
+
+sqlparse (0.4.4-1) unstable; urgency=medium
+
+  * Team upload.
+  * New upstream version 0.4.4
+  * CVE-2023-30608: ReDOS vulnerability in parser (Closes: 1034615)
+
+ -- Jérémy Lal <kapouer@melix.org>  Sat, 06 Jan 2024 23:21:05 +0100
+
 sqlparse (0.4.2-1+pexip24u4+deb12u1) pexip; urgency=medium
 
   * New upstream release

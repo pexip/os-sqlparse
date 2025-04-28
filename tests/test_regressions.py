@@ -1,7 +1,11 @@
+import copy
+import sys
+
 import pytest
 
 import sqlparse
 from sqlparse import sql, tokens as T
+from sqlparse.exceptions import SQLParseError
 
 
 def test_issue9():
@@ -401,6 +405,15 @@ def test_issue489_tzcasts():
     assert p.tokens[-1].get_alias() == 'foo'
 
 
+def test_issue562_tzcasts():
+    # Test that whitespace between 'from' and 'bar' is retained
+    formatted = sqlparse.format(
+        'SELECT f(HOUR from bar AT TIME ZONE \'UTC\') from foo', reindent=True
+    )
+    assert formatted == \
+           'SELECT f(HOUR\n         from bar AT TIME ZONE \'UTC\')\nfrom foo'
+
+
 def test_as_in_parentheses_indents():
     # did raise NoneType has no attribute is_group in _process_parentheses
     formatted = sqlparse.format('(as foo)', reindent=True)
@@ -418,3 +431,37 @@ def test_splitting_at_and_backticks_issue588():
         'grant foo to user1@`myhost`; grant bar to user1@`myhost`;')
     assert len(splitted) == 2
     assert splitted[-1] == 'grant bar to user1@`myhost`;'
+
+
+def test_comment_between_cte_clauses_issue632():
+    p, = sqlparse.parse("""
+        WITH foo AS (),
+             -- A comment before baz subquery
+             baz AS ()
+        SELECT * FROM baz;""")
+    assert p.get_type() == "SELECT"
+
+
+def test_copy_issue672():
+    p = sqlparse.parse('select * from foo')[0]
+    copied = copy.deepcopy(p)
+    assert str(p) == str(copied)
+
+
+def test_primary_key_issue740():
+    p = sqlparse.parse('PRIMARY KEY')[0]
+    assert len(p.tokens) == 1
+    assert p.tokens[0].ttype == T.Keyword
+
+
+@pytest.fixture
+def limit_recursion():
+    curr_limit = sys.getrecursionlimit()
+    sys.setrecursionlimit(100)
+    yield
+    sys.setrecursionlimit(curr_limit)
+
+
+def test_max_recursion(limit_recursion):
+    with pytest.raises(SQLParseError):
+        sqlparse.parse('[' * 1000 + ']' * 1000)
